@@ -1,7 +1,5 @@
 <div class="form-signin">
     <script>alert('<?php echo $message; ?>')</script>
-    
-<?php echo validation_errors(); ?>
     <?= form_open('user/register'); ?>
     <div class="text-center mb-4">
         <img class="mb-4" src="<?= base_url('assets/images/logo.jpg') ?>" alt="Codewar" height="100">

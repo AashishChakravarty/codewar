@@ -59,27 +59,28 @@ class User extends CI_Controller {
                     'name' => $this->input->post('name'),
                     'email' => $this->input->post('email'),
                     'password' => md5($this->input->post('password')),
+                    'role' => 'user'
                 ];
 
                 $register_data = $this->user_model->user_register($insert_data);
 
                 if ($register_data) {
 
-                    // $this->email->initialize(array(
-                    // 'protocol' => 'smtp',
-                    // 'smtp_host' => 'smtp.sendgrid.net',
-                    // 'smtp_user' => 'aashish_chakravarty',
-                    // 'smtp_pass' => 'Aashish@23',
-                    // 'smtp_port' => 587,
-                    // 'crlf' => "\r\n",
-                    // 'newline' => "\r\n"
-                    // ));
+                    $this->email->initialize(array(
+                    'protocol' => 'smtp',
+                    'smtp_host' => 'smtp.sendgrid.net',
+                    'smtp_user' => 'aashish_chakravarty',
+                    'smtp_pass' => 'Aashish@23',
+                    'smtp_port' => 587,
+                    'crlf' => "\r\n",
+                    'newline' => "\r\n"
+                    ));
 
-                    // $this->email->from('codewar.mitsgwl@gmail.com', 'Aashish');
-                    // $this->email->to($insert_data['email']);
-                    // $this->email->subject('Confirm your email address');
-                    // $this->email->message('Email Verification');
-                    // $this->email->send();
+                    $this->email->from('support@codewar.me', 'Codewar');
+                    $this->email->to($insert_data['email']);
+                    $this->email->subject('Confirm your email address');
+                    $this->email->message('Email Verification');
+                    $this->email->send();
 
                     $data = array(
                         'message' => 'Your Account Succesfully Registered. Please Login.'
@@ -142,9 +143,9 @@ class User extends CI_Controller {
 
                 $this->session->set_userdata($data);
 
-                $this->load->view('profile/profile', $data);
+                // $this->load->view('profile/profile', $data);
 
-                // redirect(base_url());
+                redirect(base_url('user/profile'));
             } else {
 
                 $data = array(

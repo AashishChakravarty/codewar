@@ -14,7 +14,9 @@
     <div class="form-group">
     <label for="class">Select Class</label>
     <select class="form-control" id="class" name="class" required>
-      <option value="class1">Class 1</option>
+    <?php foreach ($classes as $data): ?>
+      <option value="<?= $data['id'] ?>"><?= $data['class_topic'] ?></option>
+<?php endforeach; ?>
     </select>
   </div>
 

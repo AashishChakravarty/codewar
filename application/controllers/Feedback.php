@@ -22,7 +22,8 @@ class Feedback extends CI_Controller {
             redirect(base_url('user/User/login'));
         }
         else {
-            $this->load->view('feedback/feedback');
+            $data['classes'] = $this->feedback_model->class_list();
+            $this->load->view('feedback/feedback', $data);
         }
     }
 
@@ -42,36 +43,53 @@ class Feedback extends CI_Controller {
         $this->form_validation->set_rules('q6', 'Q.6', 'trim|required');
 
         if ($this->form_validation->run() == FALSE) {
-            $this->load->view('feedback/feedback');            
+            $data['classes'] = $this->feedback_model->class_list();
+            $this->load->view('feedback/feedback',$data);            
         } else {
+            $user_id = $this->session->userdata('id');
+            $class_id = $this->input->post('class');
 
-            $feedback_data = [
-                'user_id' => $this->session->userdata('id'),
-                'class' => $this->input->post('class'),
-                'q1' => $this->input->post('q1'),
-                'q2' => $this->input->post('q2'),
-                'q3' => $this->input->post('q3'),
-                'q4' => $this->input->post('q4'),
-                'q5' => $this->input->post('q5'),
-                'q6' => $this->input->post('q6'),
-                'suggestion' => $this->input->post('suggestion')
-            ];
+            $feedback_check = $this->feedback_model->is_unique_feedback($user_id, $class_id);
 
-            $result = $this->feedback_model->feedback_submit($feedback_data);
+            if (!$feedback_check) {
 
-            if($result){
+                $feedback_data = [
+                    'user_id' => $this->session->userdata('id'),
+                    'class' => $this->input->post('class'),
+                    'q1' => $this->input->post('q1'),
+                    'q2' => $this->input->post('q2'),
+                    'q3' => $this->input->post('q3'),
+                    'q4' => $this->input->post('q4'),
+                    'q5' => $this->input->post('q5'),
+                    'q6' => $this->input->post('q6'),
+                    'suggestion' => $this->input->post('suggestion')
+                ];
+    
+                $result = $this->feedback_model->feedback_submit($feedback_data);
+    
+                if($result){
+                    $data['classes'] = $this->feedback_model->class_list();
+                    $data = array(
+                        'message' => 'Your Feedback Successfully Recorded' 
+                    );
+                    $this->load->view('profile/profile', $data);
+                }
+                else {
+                    $data['classes'] = $this->feedback_model->class_list();
+                    $data = array(
+                        'message' => 'Something Went to wrong. Please try again later.' 
+                    );
+                    $this->load->view('feedback/feedback', $data);            
+                }
+            } else {
+                $data['classes'] = $this->feedback_model->class_list();
                 $data = array(
-                    'message' => 'Your Feedback Successfully Recorded' 
+                    'message' => 'You already Submit feedback of this class' 
                 );
-                $this->load->view('profile/profile', $data);
-            }
-            else {
-                $data = array(
-                    'message' => 'Something Went to wrong. Please try again later.' 
-                );
-                $this->load->view('feedback/feedback', $data);            
 
+                $this->load->view('feedback/feedback', $data);
             }
+            
         }
     }
 }
