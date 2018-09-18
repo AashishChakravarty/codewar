@@ -70,7 +70,7 @@
 
     <div class="form-label-group">
     <span class="text-danger">*</span>
-    Q.3 Were the course and the instructors interactive?
+    Q.3 Were the Class and the instructors interactive?
     <div class="form-check">
             <label class="form-check-label">
                 <input type="radio" class="form-check-input" value="agree" name="q3" required>Agree

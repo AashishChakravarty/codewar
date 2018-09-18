@@ -28,6 +28,11 @@ class Feedback extends CI_Controller {
 
     public function feedback_submit()
     {
+        $email = $this->session->userdata('email');
+        if (!isset($email)) {
+            redirect(base_url('User/login'));
+        }
+
         $this->form_validation->set_rules('class', 'Class', 'trim|required');
         $this->form_validation->set_rules('q1', 'Q.1', 'trim|required');
         $this->form_validation->set_rules('q2', 'Q.2', 'trim|required');
@@ -68,7 +73,5 @@ class Feedback extends CI_Controller {
 
             }
         }
-        
     }
-
 }
