@@ -19,7 +19,7 @@ class User extends CI_Controller {
     {
         $email = $this->session->userdata('email');
         if (isset($email)) {
-            redirect(base_url('user/User/profile'));
+            redirect(base_url('User/profile'));
         }
         else {
             $this->load->view('home');
@@ -30,7 +30,7 @@ class User extends CI_Controller {
     {     
         $email = $this->session->userdata('email');
         if (isset($email)) {
-            redirect(base_url('user/User/profile'));
+            redirect(base_url('User/profile'));
         }
         else {
             $this->load->view('signup');
@@ -41,13 +41,13 @@ class User extends CI_Controller {
 	{
         $email = $this->session->userdata('email');
         if (isset($email)) {
-            redirect(base_url('user/User/profile'));
+            redirect(base_url('User/profile'));
         }
 
         $this->form_validation->set_rules('name', 'Name', 'required');
         $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
-        $this->form_validation->set_rules('password', 'Password', 'trim|required');
-        $this->form_validation->set_rules('cpass', 'Confirm Password', 'trim|required|matches[password]');
+        $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]');
+        $this->form_validation->set_rules('cpass', 'Confirm Password', 'trim|required|matches[password]|min_length[6]');
 
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('signup');
@@ -76,12 +76,11 @@ class User extends CI_Controller {
                     // ));
 
                     // $this->email->from('codewar.mitsgwl@gmail.com', 'Aashish');
-                    // $this->email->to($insert_data['user_mail']);
+                    // $this->email->to($insert_data['email']);
                     // $this->email->subject('Confirm your email address');
                     // $this->email->message('Email Verification');
                     // $this->email->send();
 
-                    // $data['mes'] = "Done";
                     $data = array(
                         'message' => 'Your Account Succesfully Registered. Please Login.'
                     );
@@ -109,7 +108,7 @@ class User extends CI_Controller {
     {
         $email = $this->session->userdata('email');
         if (isset($email)) {
-            redirect(base_url('user/User/profile'));
+            redirect(base_url('User/profile'));
         }
         else {
             $this->load->view('login');
@@ -120,7 +119,7 @@ class User extends CI_Controller {
     {
         $email = $this->session->userdata('email');
         if (isset($email)) {
-            redirect(base_url('user/User/profile'));
+            redirect(base_url('User/profile'));
         }
         
         $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
@@ -159,7 +158,7 @@ class User extends CI_Controller {
     {
         $email = $this->session->userdata('email');
         if (!isset($email)) {
-            redirect(base_url('user/User/login'));
+            redirect(base_url('User/login'));
         }
         else {
             // $this->load->view('feedback/feedback');
@@ -187,7 +186,7 @@ class User extends CI_Controller {
     {
         $array_items = array('name', 'email');
         $this->session->unset_userdata($array_items);
-        $url= base_url('user/User/'); 
+        $url= base_url('User/'); 
         redirect($url);
     }
 }

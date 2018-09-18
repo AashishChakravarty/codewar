@@ -3,7 +3,7 @@
     <script>alert('<?php echo $message; ?>')</script>
     
 <?php echo validation_errors(); ?>
-    <?= form_open('user/user/user_login'); ?>
+    <?= form_open('user/user_login'); ?>
     <div class="text-center mb-4">
         <img class="mb-4" src="<?= base_url('assets/images/logo.jpg') ?>" alt="Codewar" height="100">
         <h1 class="h3 mb-3 font-weight-normal">Login</h1>
@@ -25,7 +25,7 @@
 
     <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
     <div class="mt-5 mb-3 text-center">
-    <a class="btn btn-info" href="<?= base_url('user/User/signup'); ?>" role="button">Sign Up</a>
+    <a class="btn btn-info" href="<?= base_url('User/signup'); ?>" role="button">Sign Up</a>
     <!-- <a class="btn btn-info" href="#" role="button">Password Reset</a> -->
     </div>
     <p class="mt-5 mb-3 text-muted text-center">MITS Codewar &copy; 2018-2019</p>

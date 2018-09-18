@@ -2,7 +2,7 @@
 <script>alert('<?php echo $message; ?>')</script>
 <div class="container">
 <div class="mt-5 mb-3 text-center">
-    <a class="btn btn-info" href="<?= base_url('user/User/logout'); ?>" role="button">Logout</a>
+    <a class="btn btn-info" href="<?= base_url('User/logout'); ?>" role="button">Logout</a>
     </div>
     <div class="row">
         <div class="col-10 offset-1">
@@ -47,4 +47,5 @@
         </div>
     </div>
     <a class="btn btn-info" href="<?= base_url('feedback'); ?>" role="button">Classes Feedback</a>
+    <a class="btn btn-info" href="https://docs.google.com/forms/d/e/1FAIpQLSfdL-bR6zQbdfNLt6iAzMY4nqLf80xc_ZItF5YJLq-yFCl6QQ/viewform?c=0&w=1" role="button" target="_blank">Quiz</a>
 </div>

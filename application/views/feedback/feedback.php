@@ -8,6 +8,7 @@
     <div class="text-center mb-4">
         <h1 class="h3 mb-3 font-weight-normal">Feedback</h1>
     </div>
+    <a href="<?= base_url('user/profile') ?>">Go to Profile</a>
     <div class="form-label-group"><span class="text-danger">*</span> Mandatory</div>
 
     <div class="form-group">
@@ -19,7 +20,7 @@
 
     <div class="form-label-group">
     <span class="text-danger">*</span>
-        Q.1 Was the lectures easy to understand?
+        Q.1 Was the lecture easy to understand?
         <div class="form-check">
             <label class="form-check-label">
                 <input type="radio" class="form-check-input" value="agree" name="q1" required>Agree
@@ -69,7 +70,7 @@
 
     <div class="form-label-group">
     <span class="text-danger">*</span>
-    Q.3 Was the course and instructors interactive?
+    Q.3 Were the course and the instructors interactive?
     <div class="form-check">
             <label class="form-check-label">
                 <input type="radio" class="form-check-input" value="agree" name="q3" required>Agree
@@ -89,7 +90,7 @@
 
     <div class="form-label-group">
     <span class="text-danger">*</span>
-    Q.4 Were the doubt solved appropriately?
+    Q.4 Were the doubts solved appropriately?
     <div class="form-check">
             <label class="form-check-label">
                 <input type="radio" class="form-check-input" value="agree" name="q4" required>Agree
@@ -139,7 +140,7 @@
 
     <div class="form-label-group">
     <span class="text-danger">*</span>
-    Q.6 Where the computer’s working properly?
+    Q.6 Were the computer’s working properly?
     <div class="form-check">
             <label class="form-check-label">
                 <input type="radio" class="form-check-input" value="agree" name="q6" required>Agree
@@ -158,7 +159,7 @@
     </div>
 
     <div class="form-label-group">
-    Q.7 Suggestion for further Improvement.
+    Q.7 Suggestions for further Improvement.
     <div class="form-check">
         <textarea name="suggestion" id="suggest" cols="50" rows="4" placeholder="Any Suggestion"></textarea>
         </div>
