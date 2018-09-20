@@ -15,23 +15,11 @@ class Feedback extends CI_Controller {
         $this->load->library('email');
     }
 
-    public function index()
-    {
-        $email = $this->session->userdata('email');
-        if (!isset($email)) {
-            redirect(base_url('user/User/login'));
-        }
-        else {
-            $data['classes'] = $this->feedback_model->class_list();
-            $this->load->view('feedback/feedback', $data);
-        }
-    }
-
     public function feedback_submit()
     {
         $email = $this->session->userdata('email');
         if (!isset($email)) {
-            redirect(base_url('User/login'));
+            redirect(base_url('login'));
         }
 
         $this->form_validation->set_rules('class', 'Class', 'trim|required');

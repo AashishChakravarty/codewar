@@ -19,21 +19,10 @@ class User extends CI_Controller {
     {
         $email = $this->session->userdata('email');
         if (isset($email)) {
-            redirect(base_url('User/profile'));
+            redirect(base_url('profile'));
         }
         else {
             $this->load->view('home');
-        }
-    }
-
-    public function signup()
-    {     
-        $email = $this->session->userdata('email');
-        if (isset($email)) {
-            redirect(base_url('User/profile'));
-        }
-        else {
-            $this->load->view('signup');
         }
     }
 
@@ -41,7 +30,7 @@ class User extends CI_Controller {
 	{
         $email = $this->session->userdata('email');
         if (isset($email)) {
-            redirect(base_url('User/profile'));
+            redirect(base_url('profile'));
         }
 
         $this->form_validation->set_rules('name', 'Name', 'required');
@@ -104,23 +93,12 @@ class User extends CI_Controller {
             }
         }
     }
-
-    public function login()
-    {
-        $email = $this->session->userdata('email');
-        if (isset($email)) {
-            redirect(base_url('User/profile'));
-        }
-        else {
-            $this->load->view('login');
-        }
-    }
     
     public function user_login()
     {
         $email = $this->session->userdata('email');
         if (isset($email)) {
-            redirect(base_url('User/profile'));
+            redirect(base_url('profile'));
         }
         
         $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
@@ -145,7 +123,7 @@ class User extends CI_Controller {
 
                 // $this->load->view('profile/profile', $data);
 
-                redirect(base_url('user/profile'));
+                redirect(base_url('profile'));
             } else {
 
                 $data = array(
@@ -159,10 +137,9 @@ class User extends CI_Controller {
     {
         $email = $this->session->userdata('email');
         if (!isset($email)) {
-            redirect(base_url('User/login'));
+            redirect(base_url('login'));
         }
         else {
-            // $this->load->view('feedback/feedback');
             $this->load->view('profile/profile');
         }
     }
@@ -185,9 +162,9 @@ class User extends CI_Controller {
 
     public function logout()
     {
-        $array_items = array('name', 'email');
+        $array_items = array('id', 'name', 'email');
         $this->session->unset_userdata($array_items);
-        $url= base_url('User/'); 
+        $url= base_url(); 
         redirect($url);
     }
 }

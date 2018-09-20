@@ -4,11 +4,11 @@
     <script>alert(<?php echo $message; ?>)</script>
 
     <?php echo validation_errors(); ?>
-    <?= form_open('feedback/feedback_submit'); ?>
+    <?= form_open('feedback'); ?>
     <div class="text-center mb-4">
         <h1 class="h3 mb-3 font-weight-normal">Feedback</h1>
     </div>
-    <a href="<?= base_url('user/profile') ?>">Go to Profile</a>
+    <a href="<?= base_url('profile') ?>">Go to Profile</a>
     <div class="form-label-group"><span class="text-danger">*</span> Mandatory</div>
 
     <div class="form-group">

@@ -1,6 +1,6 @@
 <div class="form-signin">
     <script>alert('<?php echo $message; ?>')</script>
-    <?= form_open('user/register'); ?>
+    <?= form_open('signup'); ?>
     <div class="text-center mb-4">
         <img class="mb-4" src="<?= base_url('assets/images/logo.jpg') ?>" alt="Codewar" height="100">
         <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
@@ -34,7 +34,7 @@
 
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
     <div class="mt-5 mb-3 text-center">
-    <a class="btn btn-info" href="<?= base_url('User/login'); ?>" role="button">Login</a>
+    <a class="btn btn-info" href="<?= base_url('login'); ?>" role="button">Login</a>
     <!-- <a class="btn btn-info" href="#" role="button">Password Reset</a> -->
     </div>
     <p class="mt-5 mb-3 text-muted text-center">MITS Codewar &copy; 2018-2019</p>

@@ -2,7 +2,7 @@
 <script>alert('<?php echo $message; ?>')</script>
 <div class="container">
 <div class="mt-5 mb-3 text-center">
-    <a class="btn btn-info" href="<?= base_url('User/logout'); ?>" role="button">Logout</a>
+    <a class="btn btn-info" href="<?= base_url('logout'); ?>" role="button">Logout</a>
     </div>
     <div class="row">
         <div class="col-10 offset-1">
