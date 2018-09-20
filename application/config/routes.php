@@ -56,7 +56,10 @@ $route['translate_uri_dashes'] = FALSE;
 $route['home'] = 'user/User';
 $route['signup'] = 'user/register';
 $route['login'] = 'user/user_login';
+$route['forget-password'] = 'user/forget_password';
+$route['forget-reset/(:any)/(:any)'] = 'user/forget_reset';
 $route['logout'] = 'user/logout';
 $route['profile'] = 'user/profile';
+$route['update-password'] = 'user/update_password';
 
 $route['feedback'] = 'feedback/feedback_submit';

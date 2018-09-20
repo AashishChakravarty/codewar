@@ -1,9 +1,11 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="container">
-
-    <div class="mt-5 mb-3 text-center">
-    <a class="btn btn-info" href="<?= base_url('login'); ?>" role="button">Login</a>
-        <a class="btn btn-info" href="<?= base_url('signup'); ?>" role="button">Sign Up</a>
-        <!-- <a class="btn btn-info" href="#" role="button">Password Reset</a> -->
+<div class="text-center">
+        <img class="mb-4" src="<?= base_url('assets/images/logo.jpg') ?>" alt="Codewar" height="100">
+    </div>
+    <div class=" text-center">
+        <a class="btn btn-info" href="<?= base_url('login'); ?>" role="button">Login</a>
+        <a class="btn btn-info" href="<?= base_url('signup'); ?>" role="button">Create New Account</a>
+        <a class="btn btn-info" href="<?= base_url('forget-password'); ?>" role="button">Forget Password</a>
         </div>
 </div>

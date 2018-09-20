@@ -43,10 +43,10 @@ class User_model extends CI_Model {
         }
     }
 
-    public function update_password($email, $password)
+    public function update_password($id, $password)
     {
-        $this->db->set('password', $password);
-        $this->db->where('email', $email);
+        $this->db->set('password', md5($password));
+        $this->db->where('id', $id);
         $result = $this->db->update('users');
 
         if ($result) {
@@ -54,19 +54,46 @@ class User_model extends CI_Model {
         } else {
             return 0;
         }
-        
     }
 
-    // public function save_reset_hash($id, $hash)
-    // {
-    //     $this->db->where('user_id',$id);
-    // 	$res = $this->db->update('tbl_users',array('user_reset_hash' => $hash));
-    // 	if($res){
-    //  		return $res;
-    //  	}else{
-    //  		return 0;
-    //  	}
-    // }
+    public function save_reset_link($id, $hash)
+    {
+        $this->db->where('id',$id);
+    	$res = $this->db->update('users',array('user_reset_link' => $hash));
+    	if($res){
+     		return $res;
+     	}else{
+     		return 0;
+     	}
+    }
+
+    public function reset_link($id, $hash)
+    {
+        $this->db->select('id, email')->from('users');
+        $this->db->where('id', $id);
+        $this->db->where('user_reset_link', $hash);
+        $result = $this->db->get()->row();
+
+        if ($result) {
+            return $result;
+        } else {
+            return 0;
+        }
+    }
+
+    public function reset_password($id, $password, $link)
+    {
+        $this->db->set('password', md5($password));
+        $this->db->set('user_reset_link', $link);
+        $this->db->where('id', $id);
+        $result = $this->db->update('users');
+
+        if ($result) {
+            return $result;
+        } else {
+            return 0;
+        }  
+    }
 
     // public function user_profile($email)
     // {

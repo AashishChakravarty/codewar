@@ -1,7 +1,11 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <script>alert('<?php echo $message; ?>')</script>
 <div class="container">
-<div class="mt-5 mb-3 text-center">
+    <div class="mt-5 mb-4 text-center">
+        <div class="text-center">
+            <img class="mb-4" src="<?= base_url('assets/images/logo.jpg') ?>" alt="Codewar" height="100">
+            </div>
+    <a class="btn btn-info" href="<?= base_url('update-password'); ?>" role="button">Change Password</a>
     <a class="btn btn-info" href="<?= base_url('logout'); ?>" role="button">Logout</a>
     </div>
     <div class="row">

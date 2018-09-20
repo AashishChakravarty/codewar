@@ -144,21 +144,148 @@ class User extends CI_Controller {
         }
     }
 
-    // public function update_password()
-    // {
-    //     $this->form_validation->set_rules('password', 'Password', 'trim|required');
-    //     $this->form_validation->set_rules('cpass', 'Confirm Password', 'trim|required|matches[password]');
+    public function update_password()
+    {
+        $email = $this->session->userdata('email');
+        if (!isset($email)) {
+            redirect(base_url('login'));
+        }
 
-    //     if ($this->form_validation->run() == FALSE) {
-    //         $this->load->view('profile/profile');
-    //     } else {
-    //         $email = $this->session->userdata('email');
-    //         $password = $this->input->post('password');
+        $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]');
+        $this->form_validation->set_rules('cpass', 'Confirm Password', 'trim|required|matches[password]');
 
-    //         $this->user_model->update_password($email, $password);
-    //     }
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('profile/update_password');
+        } else {
+            $id = $this->session->userdata('id');
+            $password = $this->input->post('password');
 
-    // }
+            $update_data = $this->user_model->update_password($id, $password);
+            if ($update_data) {
+                $data = array(
+                    'message' => 'Your Password Successfully Changed.'
+                );
+                $this->load->view('profile/profile', $data);
+            } else {
+                $data = array(
+                    'message' => 'Something Went to Wrong. Please try again later.'
+                );
+                $this->view('profile/profile', $data);
+            }   
+        }
+    }
+
+    public function forget_password()
+    {
+        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('forget-password');
+        } else {
+    
+            $email = $this->input->post('email');
+
+            $email_exist = $this->user_model->is_email_exist($email);
+
+            if ($email_exist) {
+                $date = new DateTime();
+                $this->load->helper('string');
+                $random_str = random_string('alnum', 16);
+                $hash = md5($email_exist->id.$date->getTimestamp().$random_str);
+
+                    // $link = 'http://192.168.2.131:4200/#/forgotReset?rt=' . $result->id .'_'. $hash ;
+                    $link = base_url().'forget-reset/' . $email_exist->id .'/'. $hash ;
+
+                    if($this->user_model->save_reset_link($email_exist->id, $hash)){
+
+                        $this->email->initialize(array(
+                            'protocol' => 'smtp',
+                            'smtp_host' => 'smtp.sendgrid.net',
+                            'smtp_user' => 'aashish_chakravarty',
+                            'smtp_pass' => 'Aashish@23',
+                            'smtp_port' => 587,
+                            'crlf' => "\r\n",
+                            'newline' => "\r\n"
+                            ));
+        
+                            $this->email->from('support@codewar.me', 'Codewar');
+                            $this->email->to($email);
+                            $this->email->subject('Reset Password');
+                            $this->email->message('Reset link: '. $link);
+                            
+                            if ($this->email->send()) {
+                                $data = array(
+                                    'message' => 'Please Check Your email. We have sent reset password link to your email id.'
+                                );
+                                $this->load->view('login', $data);
+                            } else {
+                                $data = array(
+                                    'message' => 'Something went to wrong. Please try again later.'
+                                );
+                                $this->load->view('login', $data);
+                            }
+                            
+                    } else {
+                        $data = array(
+                            'message' => 'Something went to wrong. Please try again later.'
+                        );
+                        $this->load->view('login', $data);
+                    }
+            } else {
+                $data = array(
+                    'message' => 'Email Does not Exist.'
+                );
+                $this->load->view('login', $data);
+            }
+        }
+    }
+
+    public function forget_reset()
+    {
+        $this->load->helper('url');
+        $id = $this->uri->segment(2);
+        $hash = $this->uri->segment(3);
+
+        if (isset($id)&&isset($hash)) {
+            $reset_link = $this->user_model->reset_link($id, $hash);
+            if ($reset_link) {
+
+                $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]');
+                $this->form_validation->set_rules('cpass', 'Confirm Password', 'trim|required|matches[password]');
+        
+                if ($this->form_validation->run() == FALSE) {
+                    $this->load->view('reset_password');
+                } else {
+                    $password = $this->input->post('password');
+                    $link = null;
+
+                    $update_data = $this->user_model->reset_password($id, $password, $link);
+                    if ($update_data) {
+                        $data = array(
+                            'message' => 'Your Password Successfully Changed.'
+                        );
+                        $this->load->view('login', $data);
+                    } else {
+                        $data = array(
+                            'message' => 'Something Went to Wrong. Please try again later.'
+                        );
+                        $this->load->view('login', $data);
+                    }
+                }
+            } else {
+                $data = array(
+                    'message' => 'Link invalid'
+                );
+                $this->load->view('login', $data);
+            }
+            
+        } else {
+            $data = array(
+                'message' => 'Link invalid.'
+            );
+            $this->view('login', $data);
+        }
+    }
 
     public function logout()
     {
@@ -167,4 +294,13 @@ class User extends CI_Controller {
         $url= base_url(); 
         redirect($url);
     }
+
+    // public function valid_domain($email)
+    // {
+    //     if(@checkdnsrr(array_pop(explode("@",$email)),"MX")){
+    //         return 1;
+    //     }else{
+    //         return 0;
+    //     }
+    // }
 }
