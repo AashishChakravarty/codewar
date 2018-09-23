@@ -22,166 +22,230 @@ class Forum extends CI_Controller
         $this->load->model('forum_model');
         $this->load->library('email');
 
-        $this->help = array(
-            'methods' => array(
-                'all',
-                'get/id',
-                'user_get/user_id',
-                'update/id/question',
-                'delete/id',
-                'create'
-            )
-        );
+        // $this->help = array(
+        //     'methods' => array(
+        //         'all',
+        //         'get/id',
+        //         'user_get/user_id',
+        //         'update/id/question',
+        //         'delete/id',
+        //         'create'
+        //     )
+        // );
     }
 
 
-    public function index()
+    // public function index()
+    // {
+    //     jsonResponse($this, $this->help);
+    // }
+
+    // public function all()
+    // {
+
+    //     $posts = $this->forum_model->all($this->paginate);
+    //     $res = array(
+    //         'status' => 'success',
+    //         'data' => $posts,
+    //         'paginate' => $this->paginate
+    //     );
+
+    //     jsonResponse($this, $res);
+    // }
+
+    public function add_question()
     {
-        jsonResponse($this, $this->help);
-    }
+        $id = $this->session->userdata('id');
 
-    public function all()
-    {
+        if(isset($id)){
+            $this->form_validation->set_rules('question', 'Question', 'required|min_length[10]');
 
-        $posts = $this->forum_model->all($this->paginate);
-        $res = array(
-            'status' => 'success',
-            'data' => $posts,
-            'paginate' => $this->paginate
-        );
-
-        jsonResponse($this, $res);
-    }
-
-    public function get($id = NULL)
-    {
-        $res = array(
-            'status' => 'searching'
-        );
-
-        if ($id == NULL) {
-            $res['error'] = '\'id\' required';
-            $res['help'] = $this->help;
-
-        } else {
-            $posts = $this->forum_model->get($id);
-            if ($posts == null) {
-                $res['error'] = 'id dose not match ';
+            if ($this->form_validation->run() == FALSE) {
+                // view
             } else {
-                $res['status'] = 'success';
+                $insert_data = [
+                    'user' => $id,
+                    'question' => $this->input->post('question'),
+                    'likes' => 0
+                ];
+
+                $question_submit = $this->forum_model->create_question($insert_data);
+
+                if ($question_submit) {
+                    $data = array(
+                        'message' => 'New Question Successfully Added'
+                    );
+                } else {
+                    $data = array(
+                        'message' => 'Something went to Wrong.'
+                    );
+                }  
             }
-            $res['data'] = $posts;
-        }
-        jsonResponse($this, $res);
-    }
-
-    public function user_get($user_id = NULL)
-    {
-
-        $res = array(
-            'status' => 'searching',
-            'data' => array(),
-            'paginate' => $this->paginate
-        );
-
-        if ($user_id == NULL) {
-            $res['error'] = '\'user_id\' required';
-            $res['status'] = 'failed';
-            $res['help'] = $this->help;
-
         } else {
-            $posts = $this->forum_model->get_by_user($user_id, $this->paginate);
-            $res['data'] = $posts;
-            $res['status'] = 'success';
+            $this->load->view('login');
         }
-        jsonResponse($this, $res);
     }
 
-
-    public function delete($id = NULL)
+    public function get_question($id = NULL)
     {
-        $res = array();
+        if (isset($id)) {
+            $question = $this->forum_model->question($id);    
 
-        if ($id == NULL) {
-            $res['error'] = 'question \'id\' required';
-            $res['help'] = $this->help;
-
-        } else {
-            $this->forum_model->delete_post($id);
-            $res['status'] = 'done';
-            $res['msg'] = 'Question has been removed';
-        }
-        jsonResponse($this, $res);
-    }
-
-
-    public function update($id = NULL, $question)
-    {
-        $res = array(
-            'status' => 'success'
-        );
-
-        $data = array(
-            'question' => $question,
-        );
-        try {
-            if ($this->forum_model->is_exists($id)) {
-                $this->forum_model->update_post($id, $data);
+            if ($question) {
+                $data = array(
+                    'questions' => $question
+                );
+                
             } else {
-                throw new Exception('post \'id\' dose not found');
+                show_404();
             }
-        } catch (Exception $e) {
-            $res['status'] = 'failed';
-            $res['error'] = $e->getMessage();
+        } else {
+            show_404();
         }
-
-        jsonResponse($this, $res);
     }
 
-    public function create()
+    public function new_comment($q_id = FALSE)
     {
+        $id = $this->session->userdata('id');
 
-        $context = array();
-        $user_id = $this->session->userdata('id');
-        $question = $this->input->get('question');
+        if (isset($id)) {
+            $this->form_validation->set_rules('comment', 'Answer', 'required|min_lenght[5]');
 
-        $context['question'] = $question;
-        $context['status'] = 'success';
+            if ($this->form_validation->run() == FALSE) {
+                // view
+            } else {
+                $insert_data = [
+                    'user' => $id,
+                    'question_id' => $q_id,
+                    'comment' => $this->input->post('comment'),
+                    'likes' => 0
+                ];
+                
+                $comment_data = $this->forum_model->create_comment($insert_data);
 
-        $data = array(
-            'id' => NULL,
-            'user' => '22',
-            'question' => $question,
-            'likes' => '0',
-            'tags' => ''
-        );
-        $this->forum_model->create_post($data);
-
-
-
-        jsonResponse($this, $context);
+                if ($insert_data) {
+                    $data = array(
+                        'message' => 'Your Comment Successfully Added'
+                    );
+                } else {
+                    $data = array(
+                        'message' => 'Something went to wrong'
+                    );
+                }
+            }
+            
+        } else {
+            $this->load->view('login');
+        }
     }
 
+    // public function user_get($user_id = NULL)
+    // {
+
+    //     $res = array(
+    //         'status' => 'searching',
+    //         'data' => array(),
+    //         'paginate' => $this->paginate
+    //     );
+
+    //     if ($user_id == NULL) {
+    //         $res['error'] = '\'user_id\' required';
+    //         $res['status'] = 'failed';
+    //         $res['help'] = $this->help;
+
+    //     } else {
+    //         $posts = $this->forum_model->get_by_user($user_id, $this->paginate);
+    //         $res['data'] = $posts;
+    //         $res['status'] = 'success';
+    //     }
+    //     jsonResponse($this, $res);
+    // }
 
 
-    public function testing()
-    {
-        $arr = array(
-            'name' => 'pankaj',
-            'age' => 20
-        );
+    // public function delete($id = NULL)
+    // {
+    //     $res = array();
 
-        jsonResponse($this, $arr);
-    }
+    //     if ($id == NULL) {
+    //         $res['error'] = 'question \'id\' required';
+    //         $res['help'] = $this->help;
+
+    //     } else {
+    //         $this->forum_model->delete_post($id);
+    //         $res['status'] = 'done';
+    //         $res['msg'] = 'Question has been removed';
+    //     }
+    //     jsonResponse($this, $res);
+    // }
+
+
+    // public function update($id = NULL, $question)
+    // {
+    //     $res = array(
+    //         'status' => 'success'
+    //     );
+
+    //     $data = array(
+    //         'question' => $question,
+    //     );
+    //     try {
+    //         if ($this->forum_model->is_exists($id)) {
+    //             $this->forum_model->update_post($id, $data);
+    //         } else {
+    //             throw new Exception('post \'id\' dose not found');
+    //         }
+    //     } catch (Exception $e) {
+    //         $res['status'] = 'failed';
+    //         $res['error'] = $e->getMessage();
+    //     }
+
+    //     jsonResponse($this, $res);
+    // }
+
+    // public function create()
+    // {
+
+    //     $context = array();
+    //     $user_id = $this->session->userdata('id');
+    //     $question = $this->input->get('question');
+
+    //     $context['question'] = $question;
+    //     $context['status'] = 'success';
+
+    //     $data = array(
+    //         'id' => NULL,
+    //         'user' => '22',
+    //         'question' => $question,
+    //         'likes' => '0',
+    //         'tags' => ''
+    //     );
+    //     $this->forum_model->create_post($data);
+
+
+
+    //     jsonResponse($this, $context);
+    // }
+
+
+
+    // public function testing()
+    // {
+    //     $arr = array(
+    //         'name' => 'pankaj',
+    //         'age' => 20
+    //     );
+
+    //     jsonResponse($this, $arr);
+    // }
 
 }
 
-function jsonResponse($obj, $data, $code = 200)
-{
-    $obj->output->set_content_type('application/json')
-        ->set_status_header($code)
-        ->set_output(json_encode($data));
-}
+// function jsonResponse($obj, $data, $code = 200)
+// {
+//     $obj->output->set_content_type('application/json')
+//         ->set_status_header($code)
+//         ->set_output(json_encode($data));
+// }
 
 
 
