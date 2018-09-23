@@ -12,6 +12,7 @@ class Forum_model extends CI_Model
         'forum_questions.id as question_id',
         'forum_questions.doc as question_doc',
         'users.name as sender_name',
+        'users.email as sender_email',
         'forum_questions.question as question',
         'forum_questions.likes as question_likes',
         'forum_questions.tags as question_tags'
@@ -93,6 +94,23 @@ class Forum_model extends CI_Model
             $this->db->limit($paginate['per_page'], $paginate['offset']);
         }
 
+        return $this->db->get()->result();
+    }
+
+
+
+
+    public function get_all_reply_on($question_id, $paginate=null)
+    {
+
+        $this->db->select('email, likes, comment')->from('forum_comments');
+        $this->db->join('users', 'users.id = forum_comments.user');
+//        $this->db->join('forum_questions', 'forum_questions.id = forum_comments.question_id');
+        $this->db->where('forum_comments.question_id', $question_id);
+        $this->db->order_by('forum_comments.likes DESC');
+        if($paginate != null){
+            $this->db->limit($paginate['per_page'], $paginate['offset']);
+        }
         return $this->db->get()->result();
     }
 
