@@ -1,169 +1,118 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
-<?php require_once('header.php'); ?>
-
-<div class="container-fluid bg-light fixed-top" id="navbar">
+<div class="jumbotron jumbotron-fluid" style="margin-top: 50px">
     <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">CodeWar</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <!--<li class="nav-item active">-->
-                    <!--<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>-->
-                    <!--</li>-->
-                    <!--<li class="nav-item">-->
-                    <!--<a class="nav-link" href="#">Link</a>-->
-                    <!--</li>-->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Workshops
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="Quiz.php">Code-It-In-Python</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Pycon-1.0</a>
-                        </div>
-                    </li>
-                </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
-            </div>
-        </nav>
+        <h1 class="display-4">Code War</h1>
+        <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
     </div>
 </div>
 
 
-<div class=" jumbotron-fluid" id="top-jumbotron" style="margin-top: 70px">
-    <div class="container">
-        <h1 class="display-4" style="display: inline-block">Ask Question</h1>
-
-        <!--        <p class="lead">Feel free to ask your Queries</p>-->
-    </div>
-</div>
-
-
-<div class="container" id="questions">
-
-    <div class="card">
-        <div class="card-header">
-
-        </div>
+<div class="container">
+    <!-- <div class="card">
         <div class="card-body">
-            <div class="form-row">
-                <div class="col col-sm-11">
-                    <input type="text" style="width: 100%;height: 100%; font-size: 25px;" placeholder="Question"
-                           id="question">
-                </div>
-                <div class="col col-sm-1">
-                    <button type="submit" class="btn btn-outline-primary float-right" onclick="send_question();">Send</button>
-                </div>
-            </div>
-            <hr>
+            <button type="button" class="btn btn-warning btn-circle float-right">+</button>
         </div>
-    </div>
+    </div> -->
 
-    <!-- ------------------------------------------------------------- -->
-    <?php foreach ($questions as $q) { ?>
-        <div class="card">
-            <div class="card-header">
-                <div class="form-row">
-                    <div class="col col-sm-8">
-                        <p><?php echo $q->sender_name ?></p>
-                    </div>
-                    <div class="col col-sm-4">
-                        <form class="form-inline float-right" action="Quiz.php" method="get">
-                            <button type="submit" class="btn btn-outline-success float-right"
-                                    style="display: inline-block">Like
-                            </button>
-                            <button type="submit" class="btn btn-outline-primary float-right"
-                                    style="display: inline-block">Reply
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+    <?php foreach ($questions as $question){ ?>
+    <div class="row">
+        <div class="col-md-9 offset-md-1">
+            <div class="card  mb-3">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col">
+                            <button type="button" class="btn btn-link">
+                                <?=$question->name;?></button>
+                        </div>
+                        <div class="col">
 
-
-            <div class="card-body">
-                <div class="form-row">
-                    <div class="col col-sm-11">
-                        <div class="form-check">
-                            <p>
-                            <pre><?php echo $q->question; ?></pre>
-                            </p>
+                            <nav aria-label="...">
+                                <ul class="pagination pagination-sm justify-content-end">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">Likes <span class="badge badge-primary badge-pill">
+                                                <?=$question->likes?></span></a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">Comments
+                                            <span class="badge badge-primary badge-pill">0</span> </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
-                    <div class="col col-sm-1">
-                        likes:<?= $q->question_likes ?>
-                    </div>
                 </div>
-                <hr>
+                <div class="card-body" onclick="window.location='<?= base_url('forum/details/'.$question->id); ?>'">
+                    <blockquote class="blockquote mb-0">
+                        <pre><?php
+                    $question->question = str_replace('<code>','</pre><code><pre>',$question->question);
+                    $question->question = str_replace('</code>','</pre></code>
+                        <pre>',$question->question);
+                    echo $question->question;
+                    ?></pre>
+                    </blockquote>
+                    <!-- <blockquote class="blockquote mb-0">
+                <code>
+                    <footer class="blockquote-footer">Go to <cite title="Reply on this question">Reply</cite></footer>
+                </code>
+            </blockquote> -->
+                </div>
             </div>
         </div>
-
+    </div>
     <?php } ?>
-
-    <!-- ------------------------------------------------------------- -->
-
 </div>
+
 
 
 <style>
     body {
         background-color: #e9ecef;
+        ;
     }
 
-    #top-jumbotron {
-        margin-top: 10px;
+
+    .card-body {
+        cursor: grab;
     }
 
-    .card {
-        border: none;
-        margin-bottom: 20px;
+    pre {
+        overflow-y: hidden;
+        overflow-x: auto;
     }
 
-    .card-header {
-        border-left: 5px solid #f0ad4e;
+    code pre {
+        color: #e83e8c;
+        /*border: 1px solid rgba(128, 128, 128, 0.32);*/
+        border-radius: 5px;
+        padding: 20px;
+        background-color: rgba(231, 231, 231, 0.33);
     }
 
-    #navbar {
-        box-shadow: 0px 5px rgba(0, 0, 0, 0.13);
+    pre code {
+        color: #e83e8c;
+        /*border: 1px solid rgba(128, 128, 128, 0.32);*/
+        border-radius: 5px;
+        padding: 20px;
+        background-color: rgba(231, 231, 231, 0.33);
     }
 
-    .form-check {
-        margin: 10px;
-    }
 
-    /*blockquote {*/
-    /*display: none;*/
+
+
+    /*.btn-circle.btn-xl {*/
+    /*width: 70px;*/
+    /*height: 70px;*/
+    /*padding: 10px 16px;*/
+    /*border-radius: 35px;*/
+    /*font-size: 24px;*/
+    /*line-height: 1.33;*/
     /*}*/
 
-    #bottom {
-        margin-bottom: 50px;
+    .btn-circle {
+        width: 30px;
+        height: 30px;
+        padding: 6px 0px;
+        border-radius: 15px;
+        text-align: center;
+        font-size: 12px;
+        line-height: 1.42857;
     }
 </style>
-
-<script>
-    function send_question() {
-        let q = document.getElementById('question').value;
-        console.log(q);
-        $.get("http://localhost/codewar/api/Forum/create/",
-            {question:q},
-            function (data, status) {
-                console.log(data);
-                console.log(status);
-            }
-        );
-    }
-
-</script>
-
-
-<?php require_once('footer.php'); ?>

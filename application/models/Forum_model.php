@@ -49,6 +49,7 @@ class Forum_model extends CI_Model
         $this->db->select('forum_questions.id, forum_questions.user, forum_questions.question, forum_questions.likes, forum_questions.tags, users.name');
         $this->db->from('forum_questions');
         $this->db->join('users', 'users.id = forum_questions.user');
+        $this->db->order_by('forum_questions.id DESC');
         $result = $this->db->get()->result();
 
         if ($result) {
@@ -69,6 +70,22 @@ class Forum_model extends CI_Model
             return 0;
         }
     }
+
+    public function get_question_comment($q_id)
+    {
+        $this->db->select('forum_comments.id, forum_comments.user, forum_comments.comment, forum_comments.likes, users.name');
+        $this->db->from('forum_comments');
+        $this->db->join('users', 'users.id = forum_comments.user');
+        $this->db->where('forum_comments.question_id', $q_id);
+        return $this->db->get()->result();
+
+        // if ($result) {
+        //     return $result;
+        // } else {
+        //     return 0;
+        // }
+    }
+
 
 //     public function get_all_reply_on($question_id, $paginate=null)
 //     {

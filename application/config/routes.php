@@ -63,3 +63,9 @@ $route['profile'] = 'user/profile';
 $route['update-password'] = 'user/update_password';
 
 $route['feedback'] = 'feedback/feedback_submit';
+
+// Forum
+$route['forum'] = 'forum/Forum/all_questions';
+$route['forum/details/(:any)'] = 'forum/Forum/get_question/$1';
+$route['forum/create-post'] = 'forum/Forum/add_question';
+$route['forum/add-comment'] = 'forum/Forum/new_comment';

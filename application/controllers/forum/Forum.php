@@ -15,7 +15,8 @@ class Forum extends CI_Controller
 
         parent:: __construct();
         $this->load->helper('url');
-//        $this->load->view('index');
+        $this->load->view('index');
+        $this->load->view('forum/navbar');
         $this->load->helper('form');
         $this->load->library('form_validation');
         $this->load->library('session');
@@ -61,7 +62,7 @@ class Forum extends CI_Controller
             $this->form_validation->set_rules('question', 'Question', 'required|min_length[10]');
 
             if ($this->form_validation->run() == FALSE) {
-                // view
+                $this->load->view('forum/create-post');
             } else {
                 $insert_data = [
                     'user' => $id,
@@ -75,10 +76,13 @@ class Forum extends CI_Controller
                     $data = array(
                         'message' => 'New Question Successfully Added'
                     );
+                    // $this->load->view('create-post');
+                    redirect(base_url('forum'));
                 } else {
                     $data = array(
                         'message' => 'Something went to Wrong.'
                     );
+                    $this->load->view('create-post', $data);
                 }  
             }
         } else {
@@ -86,17 +90,27 @@ class Forum extends CI_Controller
         }
     }
 
-    public function get_question($id = NULL)
+    public function get_question($q_id = NULL)
     {
-        if (isset($id)) {
-            $question = $this->forum_model->question($id);    
+
+        
+        if (isset($q_id)) {
+            $question = $this->forum_model->question($q_id);
+            $comments = $this->forum_model->get_question_comment($q_id);
+            // print_r($comments);
+            // die;
+                            // if($_REQUEST['METHOD'] == 'POST'){
+                            //     $this->new_comment($q_id);
+                            // }
 
             if ($question) {
                 $data = array(
-                    'questions' => $question
+                    'question' => $question,
+                    'comments' => $comments
                 );
-                
+                $this->load->view('forum/details', $data);
             } else {
+                // die("me hi hu");
                 show_404();
             }
         } else {
@@ -104,33 +118,39 @@ class Forum extends CI_Controller
         }
     }
 
-    public function new_comment($q_id = FALSE)
+    public function new_comment()
     {
         $id = $this->session->userdata('id');
 
         if (isset($id)) {
-            $this->form_validation->set_rules('comment', 'Answer', 'required|min_lenght[5]');
+            $this->form_validation->set_rules('comment', 'Answer', 'required|min_length[5]');
+            $this->form_validation->set_rules('q_id', 'Question', 'required');
+
+            $q_id = $this->input->post('q_id');
 
             if ($this->form_validation->run() == FALSE) {
-                // view
+                redirect(base_url('forum/details/'. $q_id));
+                // $this->load->view('forum/details/'.$q_id);
             } else {
                 $insert_data = [
                     'user' => $id,
-                    'question_id' => $q_id,
+                    'question_id' => $this->input->post('q_id'),
                     'comment' => $this->input->post('comment'),
                     'likes' => 0
                 ];
-                
                 $comment_data = $this->forum_model->create_comment($insert_data);
 
                 if ($insert_data) {
                     $data = array(
                         'message' => 'Your Comment Successfully Added'
                     );
+                // $this->load->view('forum/details/'.$q_id, $data);
+                redirect(base_url('forum/details/'. $q_id));
                 } else {
                     $data = array(
                         'message' => 'Something went to wrong'
                     );
+                redirect(base_url('forum/details/'. $q_id));
                 }
             }
             
@@ -147,10 +167,12 @@ class Forum extends CI_Controller
             $data = array(
                 'questions' => $questions
             );
+            $this->load->view('forum/home', $data);
         } else {
             $data = array(
                 'message' => 'Question Not Found'
             );
+            $this->load->view('forum/home', $data);
         }
     }
 

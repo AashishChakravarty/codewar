@@ -5,6 +5,7 @@
         <div class="text-center">
             <img class="mb-4" src="<?= base_url('assets/images/logo.jpg') ?>" alt="Codewar" height="100">
             </div>
+    <a class="btn btn-success" href="<?= base_url('forum'); ?>" role="button">Discussion Forum</a>
     <a class="btn btn-info" href="<?= base_url('update-password'); ?>" role="button">Change Password</a>
     <a class="btn btn-info" href="<?= base_url('logout'); ?>" role="button">Logout</a>
     </div>
@@ -50,6 +51,8 @@
             </div>
         </div>
     </div>
+    <div class="text-center">
     <a class="btn btn-info" href="<?= base_url('feedback'); ?>" role="button">Classes Feedback</a>
     <a class="btn btn-info" href="https://docs.google.com/forms/d/e/1FAIpQLSfdL-bR6zQbdfNLt6iAzMY4nqLf80xc_ZItF5YJLq-yFCl6QQ/viewform?c=0&w=1" role="button" target="_blank">Quiz</a>
+</div>
 </div>
