@@ -21,7 +21,22 @@ class Forum extends CI_Controller
         $context = array(
             'questions' => $this->forum_model->all()
         );
-        $this->load->view('forum/home', $context);
+        // $this->load->view('forum/home', $context);
+        $this->load->view('forum/index', $context);
+    }
+
+
+    public function reply($question_id=null){
+        if($question_id == null){
+            redirect(base_url('Forum'));
+        }
+
+        $context = array(
+            'question' => $this->forum_model->get($question_id),
+            'comments' => $this->forum_model->get_all_reply_on($question_id)
+        );
+        // $this->load->view('forum/home', $context);
+        $this->load->view('forum/reply', $context);
     }
 
     function create_post()

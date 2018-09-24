@@ -139,6 +139,42 @@ class Forum extends CI_Controller
         }
     }
 
+    public function all_questions()
+    {
+        $questions = $this->forum_model->get_all_questions();
+
+        if ($questions) {
+            $data = array(
+                'questions' => $questions
+            );
+        } else {
+            $data = array(
+                'message' => 'Question Not Found'
+            );
+        }
+    }
+
+    public function get_user_questions()
+    {
+        $id = $this->session->userdata('id');
+        if (isset($id)) {
+            $questions_data = $this->forum_model->user_questions($id);
+
+            if ($questions_data) {
+                $data = array(
+                    'questions' => $questions_data
+                );
+            } else {
+                $data = array(
+                    'message' => 'Questions Not Found'
+                );
+            }
+            
+        } else {
+            $this->load->view('login');
+        }
+    }
+
     // public function user_get($user_id = NULL)
     // {
 
