@@ -22,6 +22,7 @@ class Forum extends CI_Controller
         $this->load->library('session');
         $this->load->model('forum_model');
         $this->load->library('email');
+        $this->load->library("security");
 
         // $this->help = array(
         //     'methods' => array(
@@ -70,7 +71,9 @@ class Forum extends CI_Controller
                     'likes' => 0
                 ];
 
-                $question_submit = $this->forum_model->create_question($insert_data);
+                $data = $this->security->xss_clean($insert_data);
+
+                $question_submit = $this->forum_model->create_question($data);
 
                 if ($question_submit) {
                     $data = array(
@@ -130,7 +133,10 @@ class Forum extends CI_Controller
                     'comment' => $this->input->post('comment'),
                     'likes' => 0
                 ];
-                $comment_data = $this->forum_model->create_comment($insert_data);
+
+                $data = $this->security->xss_clean($insert_data);
+
+                $comment_data = $this->forum_model->create_comment($data);
 
                 if ($insert_data) {
                     $data = array(
@@ -296,6 +302,4 @@ class Forum extends CI_Controller
 //         ->set_status_header($code)
 //         ->set_output(json_encode($data));
 // }
-
-
 
