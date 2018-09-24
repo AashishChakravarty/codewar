@@ -295,11 +295,6 @@ class User extends CI_Controller {
         redirect($url);
     }
 
-    public function forum()
-    {
-        $this->load->view('coming_soon');
-    }
-
     // public function valid_domain($email)
     // {
     //     if(@checkdnsrr(array_pop(explode("@",$email)),"MX")){

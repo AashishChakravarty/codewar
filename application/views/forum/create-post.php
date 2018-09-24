@@ -1,16 +1,20 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="container" style="margin-top:70px;">
+<script>alert('<?php echo $message; ?>')</script>
     <!-- Comments Form -->
     <div class="col-md-9 offset-1">
     <div class="card">
         <h5 class="card-header">Add New Question:</h5>
         <div class="card-body">
-                <?= form_open('forum/add-comment'); ?>
+                <?= form_open('forum/create-post'); ?>
                 <div class="form-group">
-                    <textarea class="form-control" name="question" rows="8" placeholder="Add your Question"></textarea>
+                    <textarea class="form-control" name="question" rows="8" placeholder="Add your Question" required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
+                <a role="button" href="<?= base_url('forum') ?>" class="btn btn-info">Back to Questions</a>
             </form>
+
+            <?= validation_errors(); ?>
         </div>
     </div>
 </div>

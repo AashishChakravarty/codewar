@@ -92,10 +92,11 @@
                 <?= form_open('forum/add-comment'); ?>
                 <div class="form-group">
                     <input type="text" name='q_id' hidden value="<?= $question->id ?>">
-                    <textarea class="form-control" name="comment" rows="5" placeholder="Enter Your Reply"></textarea>
+                    <textarea class="form-control" name="comment" rows="5" placeholder="Enter Your Reply" required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary float-right">Submit</button>
             </form>
+            <?= validation_errors(); ?>
         </div>
     </div>
     </div>

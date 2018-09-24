@@ -91,17 +91,10 @@ class Forum extends CI_Controller
     }
 
     public function get_question($q_id = NULL)
-    {
-
-        
+    {        
         if (isset($q_id)) {
             $question = $this->forum_model->question($q_id);
             $comments = $this->forum_model->get_question_comment($q_id);
-            // print_r($comments);
-            // die;
-                            // if($_REQUEST['METHOD'] == 'POST'){
-                            //     $this->new_comment($q_id);
-                            // }
 
             if ($question) {
                 $data = array(
@@ -110,7 +103,6 @@ class Forum extends CI_Controller
                 );
                 $this->load->view('forum/details', $data);
             } else {
-                // die("me hi hu");
                 show_404();
             }
         } else {
@@ -123,7 +115,7 @@ class Forum extends CI_Controller
         $id = $this->session->userdata('id');
 
         if (isset($id)) {
-            $this->form_validation->set_rules('comment', 'Answer', 'required|min_length[5]');
+            $this->form_validation->set_rules('comment', 'Answer', 'required');
             $this->form_validation->set_rules('q_id', 'Question', 'required');
 
             $q_id = $this->input->post('q_id');

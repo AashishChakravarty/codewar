@@ -1,7 +1,12 @@
 <div class="jumbotron jumbotron-fluid" style="margin-top: 50px">
     <div class="container">
-        <h1 class="display-4">Code War</h1>
-        <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+        <div class="row">
+            <!-- <h1 class="display-4">Code War</h1> -->
+            <!-- <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p> -->
+            <!-- <div class="flaot-right col-md-2 offset-md-8"> -->
+            <a class="btn btn-primary offset-md-8" href="<?= base_url('forum/create-post') ?>" role="submit">Add New Question</a>
+            <!-- </div> -->
+        </div>
     </div>
 </div>
 
@@ -13,7 +18,10 @@
         </div>
     </div> -->
 
-    <?php foreach ($questions as $question){ ?>
+    <?php 
+    if (isset($questions)) {
+    
+    foreach ($questions as $question){ ?>
     <div class="row">
         <div class="col-md-9 offset-md-1">
             <div class="card  mb-3">
@@ -31,9 +39,9 @@
                                         <a class="page-link" href="#">Likes <span class="badge badge-primary badge-pill">
                                                 <?=$question->likes?></span></a>
                                     </li>
-                                    <li class="page-item"><a class="page-link" href="#">Comments
+                                    <!-- <li class="page-item"><a class="page-link" href="#">Comments
                                             <span class="badge badge-primary badge-pill">0</span> </a>
-                                    </li>
+                                    </li> -->
                                 </ul>
                             </nav>
                         </div>
@@ -57,7 +65,17 @@
             </div>
         </div>
     </div>
-    <?php } ?>
+    <?php }
+    } else {
+        ?>
+
+    <h2>
+        <?= $message; ?>
+    </h2>
+
+    <?php
+    }
+    ?>
 </div>
 
 
