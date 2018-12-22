@@ -17,13 +17,14 @@ class User extends CI_Controller {
 
     public function index()
     {
-        $email = $this->session->userdata('email');
-        if (isset($email)) {
-            redirect(base_url('profile'));
-        }
-        else {
-            $this->load->view('home');
-        }
+        $this->load->view('team.php');
+        // $email = $this->session->userdata('email');
+        // if (isset($email)) {
+        //     redirect(base_url('profile'));
+        // }
+        // else {
+        //     $this->load->view('home');
+        // }
     }
 
 	public function register()
