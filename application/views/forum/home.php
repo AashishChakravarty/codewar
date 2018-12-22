@@ -47,7 +47,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body" onclick="window.location='<?= base_url('forum/details/'.$question->id); ?>'">
+                <div class="card-body" onclick="window.location='<?= base_url('forum/question/'.$question->id); ?>'">
                     <blockquote class="blockquote mb-0">
                         <pre><?php
                     $question->question = str_replace('<code>','</pre><code><pre>',$question->question);

@@ -10,8 +10,8 @@ class Forum extends CI_Controller
 
     public function __construct()
     {
-        header('Access-Control-Allow-Origin: *');
-        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+        // header('Access-Control-Allow-Origin: *');
+        // header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 
         parent:: __construct();
         $this->load->helper('url');
@@ -22,7 +22,7 @@ class Forum extends CI_Controller
         $this->load->library('session');
         $this->load->model('forum_model');
         $this->load->library('email');
-        $this->load->library("security");
+        $this->load->helper('security');
 
         // $this->help = array(
         //     'methods' => array(
@@ -104,7 +104,7 @@ class Forum extends CI_Controller
                     'question' => $question,
                     'comments' => $comments
                 );
-                $this->load->view('forum/details', $data);
+                $this->load->view('forum/question', $data);
             } else {
                 show_404();
             }
@@ -124,8 +124,8 @@ class Forum extends CI_Controller
             $q_id = $this->input->post('q_id');
 
             if ($this->form_validation->run() == FALSE) {
-                redirect(base_url('forum/details/'. $q_id));
-                // $this->load->view('forum/details/'.$q_id);
+                redirect(base_url('forum/question/'. $q_id));
+                // $this->load->view('forum/question/'.$q_id);
             } else {
                 $insert_data = [
                     'user' => $id,
@@ -142,13 +142,13 @@ class Forum extends CI_Controller
                     $data = array(
                         'message' => 'Your Comment Successfully Added'
                     );
-                // $this->load->view('forum/details/'.$q_id, $data);
-                redirect(base_url('forum/details/'. $q_id));
+                // $this->load->view('forum/question/'.$q_id, $data);
+                redirect(base_url('forum/question/'. $q_id));
                 } else {
                     $data = array(
                         'message' => 'Something went to wrong'
                     );
-                redirect(base_url('forum/details/'. $q_id));
+                redirect(base_url('forum/question/'. $q_id));
                 }
             }
             
