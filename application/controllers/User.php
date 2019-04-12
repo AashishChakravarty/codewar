@@ -59,8 +59,8 @@ class User extends CI_Controller {
                     $this->email->initialize(array(
                     'protocol' => 'smtp',
                     'smtp_host' => 'smtp.sendgrid.net',
-                    'smtp_user' => 'aashish_chakravarty',
-                    'smtp_pass' => 'Aashish@23',
+                    'smtp_user' => '',
+                    'smtp_pass' => '',
                     'smtp_port' => 587,
                     'crlf' => "\r\n",
                     'newline' => "\r\n"
